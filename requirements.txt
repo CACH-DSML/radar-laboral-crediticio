@@ -1,0 +1,3 @@
+# Dependencias para publicar el dashboard en Streamlit Community Cloud.
+# Instala el paquete del repositorio con el extra del producto.
+-e .[producto]

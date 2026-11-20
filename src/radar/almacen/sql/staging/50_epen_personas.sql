@@ -1,0 +1,80 @@
+-- Una fila por persona y visita, con todas las filas de las bases anuales de la EPEN.
+-- Conserva los nombres del INEI en minúsculas. Solo fija tipos, limpia la llave de panel
+-- y completa a cuatro dígitos los códigos de ocupación y de actividad, que el .dta trae
+-- como número y pierden el cero inicial.
+CREATE OR REPLACE TABLE staging.epen_personas AS
+SELECT
+    -- Identificación y diseño muestral
+    CAST(anio AS INTEGER) AS anio,
+    CAST(mes AS INTEGER) AS mes,
+    trim(conglomerado) AS conglomerado,
+    CAST(muestra AS INTEGER) AS muestra,
+    trim(selviv) AS selviv,
+    CAST(hogar AS INTEGER) AS hogar,
+    CAST(c201 AS INTEGER) AS c201,
+    nullif(trim(llave_panel), '') AS llave_panel,
+    trim(ccdd) AS ccdd,
+    CAST(estrato AS INTEGER) AS estrato,
+    CAST(area AS INTEGER) AS area,
+    CAST(division_lima AS INTEGER) AS division_lima,
+    CAST(resident AS INTEGER) AS resident,
+    CAST(nroinf AS INTEGER) AS nroinf,
+    fac300_anual,
+    -- Características de la persona
+    CAST(c203 AS INTEGER) AS c203,
+    CAST(c204 AS INTEGER) AS c204,
+    CAST(c207 AS INTEGER) AS c207,
+    CAST(c208 AS INTEGER) AS c208,
+    CAST(c366 AS INTEGER) AS c366,
+    CAST(c376 AS INTEGER) AS c376,
+    CAST(c377 AS INTEGER) AS c377,
+    -- Condición de actividad y ocupación principal
+    CAST(ocup300 AS INTEGER) AS ocup300,
+    lpad(CAST(CAST(c308_cod AS INTEGER) AS VARCHAR), 4, '0') AS c308_cod,
+    lpad(CAST(CAST(c309_cod AS INTEGER) AS VARCHAR), 4, '0') AS c309_cod,
+    CAST(c310 AS INTEGER) AS c310,
+    CAST(c311 AS INTEGER) AS c311,
+    CAST(c312 AS INTEGER) AS c312,
+    CAST(c313 AS INTEGER) AS c313,
+    CAST(c317 AS INTEGER) AS c317,
+    CAST(c317a AS INTEGER) AS c317a,
+    CAST(informal_p AS INTEGER) AS informal_p,
+    -- Horas y subempleo
+    c318_t,
+    c328_t,
+    whorat,
+    CAST(c330 AS INTEGER) AS c330,
+    c331,
+    CAST(c333 AS INTEGER) AS c333,
+    CAST(c334 AS INTEGER) AS c334,
+    CAST(p209h AS INTEGER) AS p209h,
+    CAST(c335 AS INTEGER) AS c335,
+    CAST(c338 AS INTEGER) AS c338,
+    -- Ingresos mensuales
+    i339_1,
+    i342,
+    i345_1,
+    i348,
+    d341_t,
+    d344,
+    d347_t,
+    d350,
+    d351_t,
+    ingtot,
+    ingtotp,
+    ingtrabw,
+    -- Desocupados e inactivos
+    CAST(c352 AS INTEGER) AS c352,
+    CAST(c353 AS INTEGER) AS c353,
+    CAST(c354 AS INTEGER) AS c354,
+    CAST(c355 AS INTEGER) AS c355,
+    CAST(c356 AS INTEGER) AS c356,
+    c358,
+    CAST(c359 AS INTEGER) AS c359,
+    -- Seguro de salud y pensiones
+    CAST(seguro1 AS INTEGER) AS seguro1,
+    CAST(c364_1 AS INTEGER) AS c364_1,
+    CAST(c364_2 AS INTEGER) AS c364_2,
+    CAST(c364_3 AS INTEGER) AS c364_3,
+    CAST(c364_4 AS INTEGER) AS c364_4
+FROM raw.epen;

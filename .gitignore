@@ -1,0 +1,41 @@
+# Datos: nunca se suben microdatos ni derivados locales
+/data/*
+!/data/README.md
+/EPEN/
+*.dta
+*.sav
+*.zip
+*.duckdb
+*.duckdb.wal
+*.parquet
+*.xlsx
+*.xls
+*.csv.gz
+# Excepción: la base del dashboard, solo con tablas agregadas (python -m radar.producto.exportar_demo)
+!/dashboard/radar_demo.duckdb
+
+# Pruebas automáticas y su referencia de Stata: se usan en local, no se publican
+/tests/
+/stata/
+
+# Entorno y credenciales
+.venv/
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+.ruff_cache/
+
+# Herramientas locales
+graphify-out/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
